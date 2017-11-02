@@ -1,8 +1,6 @@
 ﻿<Application
-    x:Class="MetaCent.App"
+    x:Class="Meowtrix.MetaCent.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MetaCent"
-    RequestedTheme="Light">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 </Application>

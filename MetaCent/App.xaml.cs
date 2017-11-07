@@ -1,4 +1,5 @@
 ﻿using System;
+using Meowtrix.MetaCent.Views;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -13,7 +14,7 @@ namespace Meowtrix.MetaCent
     /// <summary>
     /// 提供特定于应用程序的行为，以补充默认的应用程序类。
     /// </summary>
-    sealed partial class App : Application
+    public sealed partial class App : Application
     {
         /// <summary>
         /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
@@ -83,6 +84,8 @@ namespace Meowtrix.MetaCent
             if (rootFrame.Content == null)
                 rootFrame.Navigate(typeof(MainPage), null);
 
+            SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
+
             Window.Current.Activate();
 
             var view = ApplicationView.GetForCurrentView();
@@ -97,6 +100,17 @@ namespace Meowtrix.MetaCent
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
 
             return view.Id;
+        }
+
+        private void App_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (Window.Current.Content is Frame rootFrame
+                && rootFrame.CanGoBack
+                && e.Handled == false)
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
         }
     }
 }

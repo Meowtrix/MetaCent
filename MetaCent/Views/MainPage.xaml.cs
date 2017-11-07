@@ -4,6 +4,7 @@ using Windows.Storage.Pickers;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace Meowtrix.MetaCent.Views
@@ -26,14 +27,39 @@ namespace Meowtrix.MetaCent.Views
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
 
-        private async void NewRepo(object sender, RoutedEventArgs e)
+        private async void NewRepo(object sender, TappedRoutedEventArgs e)
         {
+            e.Handled = true;
             var picker = new FolderPicker();
             picker.FileTypeFilter.Add("*");
             picker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
             var folder = await picker.PickSingleFolderAsync();
             if (folder != null)
                 MRU.Add(folder, folder.DisplayName);
+        }
+
+        private async void OpenRepo(object sender, TappedRoutedEventArgs e)
+        {
+            var data = (sender as FrameworkElement)?.DataContext as MRUEntry;
+            if (data == null) return;
+            List.IsEnabled = false;
+            var folder = await data.GetFolderAsync();
+            if (folder == null)
+            {
+                var dialog = new ContentDialog
+                {
+                    Content = "Failed to open the repository. Remove it?",
+                    PrimaryButtonText = "Remove",
+                    SecondaryButtonText = "Cancel"
+                };
+                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                    data.Remove();
+            }
+            else
+            {
+                (Window.Current.Content as Frame)?.Navigate(typeof(RepoPage), folder);
+            }
+            List.IsEnabled = true;
         }
     }
 }

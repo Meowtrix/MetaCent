@@ -13,7 +13,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Repositories" Style="{ThemeResource HeaderTextBlockStyle}"/>
-        <ListView Grid.Row="1" ItemsSource="{x:Bind MRU.Entries}">
+        <ListView Grid.Row="1" x:Name="List" ItemsSource="{x:Bind MRU.Entries}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -21,7 +21,7 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:MRUEntry">
-                    <Grid>
+                    <Grid Tapped="OpenRepo">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -36,7 +36,7 @@
                         <TextBlock Grid.Row="1" Margin="4"
                                    Text="{x:Bind Path, Mode=OneWay, TargetNullValue=&#x20;}" Style="{ThemeResource BodyTextBlockStyle}"/>
                         <Button Grid.Column="1" Grid.RowSpan="2"
-                                Click="{x:Bind Remove}" Style="{ThemeResource TextBlockButtonStyle}">
+                                Tapped="{x:Bind Remove}" Style="{ThemeResource TextBlockButtonStyle}">
                             <SymbolIcon Symbol="Delete"/>
                         </Button>
                     </Grid>
@@ -46,7 +46,7 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Add" Click="NewRepo"/>
+            <AppBarButton Icon="Add" Tapped="NewRepo"/>
             <AppBarButton Icon="Setting"/>
         </CommandBar>
     </Page.BottomAppBar>

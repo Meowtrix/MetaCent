@@ -36,7 +36,7 @@
                         <TextBlock Grid.Row="1" Margin="4"
                                    Text="{x:Bind Path, Mode=OneWay, TargetNullValue=&#x20;}" Style="{ThemeResource BodyTextBlockStyle}"/>
                         <Button Grid.Column="1" Grid.RowSpan="2"
-                                Tapped="{x:Bind Remove}" Style="{ThemeResource TextBlockButtonStyle}">
+                                Tapped="RemoveRepo" Style="{ThemeResource TextBlockButtonStyle}">
                             <SymbolIcon Symbol="Delete"/>
                         </Button>
                     </Grid>

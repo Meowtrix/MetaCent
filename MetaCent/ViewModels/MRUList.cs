@@ -19,14 +19,14 @@ namespace Meowtrix.MetaCent.ViewModels
         {
             Dispatcher = dispatcher;
             mru = StorageApplicationPermissions.MostRecentlyUsedList;
-            innerList = new ObservableCollection<MRUEntry>(mru.Entries.Select(x => new MRUEntry(this, x.Metadata, x.Token, mru.GetFolderAsync(x.Token))));
+            innerList = new ObservableCollection<MRUEntry>(mru.Entries.Select(x => new MRUEntry(Dispatcher, x.Metadata, x.Token, mru.GetFolderAsync(x.Token))));
             Entries = new ReadOnlyObservableCollection<MRUEntry>(innerList);
         }
 
         public async void Add(StorageFolder folder, string title)
         {
             string token = mru.Add(folder, title);
-            var entry = new MRUEntry(this, title, token, folder);
+            var entry = new MRUEntry(Dispatcher, title, token, folder);
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => innerList.Insert(0, entry));
         }
 

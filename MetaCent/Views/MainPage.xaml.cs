@@ -53,13 +53,21 @@ namespace Meowtrix.MetaCent.Views
                     SecondaryButtonText = "Cancel"
                 };
                 if (await dialog.ShowAsync() == ContentDialogResult.Primary)
-                    data.Remove();
+                    MRU.Remove(data);
             }
             else
             {
                 (Window.Current.Content as Frame)?.Navigate(typeof(RepoPage), folder);
             }
             List.IsEnabled = true;
+        }
+
+        private void RemoveRepo(object sender, TappedRoutedEventArgs e)
+        {
+            var data = (sender as FrameworkElement)?.DataContext as MRUEntry;
+            if (data == null) return;
+            e.Handled = true;
+            MRU.Remove(data);
         }
     }
 }

@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage;
-using Windows.UI.Core;
 
 namespace Meowtrix.MetaCent.ViewModels
 {
@@ -14,24 +13,21 @@ namespace Meowtrix.MetaCent.ViewModels
         public string Path { get; private set; }
         private readonly Task<StorageFolder> folderTask;
 
-        private readonly CoreDispatcher dispatcher;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MRUEntry(CoreDispatcher dispatcher, string title, string token, IAsyncOperation<StorageFolder> folderTask)
+        public MRUEntry(string title, string token, IAsyncOperation<StorageFolder> folderTask)
         {
-            this.dispatcher = dispatcher;
             Title = title;
             Token = token;
             this.folderTask = folderTask.AsTask();
             UpdateFolder();
         }
 
-        public MRUEntry(CoreDispatcher dispatcher, string title, string token, StorageFolder folder)
+        public MRUEntry(string title, string token, StorageFolder folder)
         {
-            this.dispatcher = dispatcher;
             Title = title;
             Token = token;
+            Path = folder.Path;
             folderTask = Task.FromResult(folder);
         }
 
@@ -41,7 +37,7 @@ namespace Meowtrix.MetaCent.ViewModels
             if (!string.IsNullOrEmpty(folder?.Path))
             {
                 Path = folder.Path;
-                await dispatcher.RunAsync(CoreDispatcherPriority.High, () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Path))));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Path)));
             }
         }
 

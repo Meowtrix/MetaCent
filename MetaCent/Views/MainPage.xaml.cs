@@ -14,11 +14,10 @@ namespace Meowtrix.MetaCent.Views
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private readonly MRUList MRU;
+        private readonly MRUList MRU = new MRUList();
         public MainPage()
         {
             this.InitializeComponent();
-            MRU = new MRUList(Dispatcher);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
